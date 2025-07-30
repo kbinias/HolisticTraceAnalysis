@@ -315,9 +315,9 @@ def _compress_df(
 
     # for XPU traces, we replace the syclqueue column name with stream for consistency with the rest of the code
     if "syclqueue" in df.columns:
-        if "stream" in df.columns:
+        if "stream" in df.columns and (df["syclqueue"] != -1).any():
             df = df.drop("stream", axis=1)
-        df = df.rename(columns={"syclqueue": "stream"})
+            df = df.rename(columns={"syclqueue": "stream"})
 
     return df, local_symbol_table
 
